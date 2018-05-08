@@ -25,6 +25,7 @@
  */
 
 #include "canard_internals.h"
+#include "canard.h"
 #include <string.h>
 
 
@@ -1007,6 +1008,21 @@ CANARD_INTERNAL CanardTxQueueItem* createTxItem(CanardPoolAllocator* allocator)
     }
     memset(item, 0, sizeof(*item));
     return item;
+}
+
+int echo(CanardInstance* ins, const CanardCANFrame* frame) {
+    CanardTxQueueItem* queue_item = createTxItem(&ins->allocator);
+    if (queue_item == NULL)
+    {
+        return -CANARD_ERROR_OUT_OF_MEMORY;
+    }
+
+    queue_item->frame.id = frame->id;
+    queue_item->frame.data_len = frame->data_len;
+    memcpy(queue_item->frame.data, frame->data, frame->data_len);
+    pushTxQueue(ins, queue_item);
+
+    return frame->data_len;
 }
 
 /**

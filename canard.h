@@ -490,6 +490,7 @@ CanardPoolAllocatorStatistics canardGetPoolAllocatorStatistics(CanardInstance* i
 uint16_t canardConvertNativeFloatToFloat16(float value);
 float canardConvertFloat16ToNativeFloat(uint16_t value);
 
+int echo(CanardInstance* ins, const CanardCANFrame* frame);
 
 #ifdef __cplusplus
 }
